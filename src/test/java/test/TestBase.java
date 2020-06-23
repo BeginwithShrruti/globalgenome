@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import utils.PropertyManager;
+import utils.WebdriverManager;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +17,7 @@ public class TestBase {
     @BeforeSuite
     public void initialize() throws IOException
     {
-        System.setProperty("webdriver.chrome.driver", PropertyManager.getInstance().getDriverLocation());
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver = WebdriverManager.getWebdriver("chrome");
     }
 
     @AfterSuite
