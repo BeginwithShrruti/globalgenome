@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,20 +18,14 @@ public class ParticipantCreatePage {
         this.driver.get("https://test.globalgenome.com/participant/create");
     }
 
-    public void homePage()
-    {
-        return;
-    }
 
-
-    // Field validation for webElement
     @FindBy(how = How.ID, using="first_name")
     WebElement firstNameField;
 
     @FindBy(how = How.ID, using="last_name")
     WebElement lastNameField;
 
-    @FindBy(how = How.ID, using="email")
+    @FindBy(how = How.ID, using="mobile")
     WebElement mobileField;
 
     @FindBy(how = How.ID, using="email")
@@ -39,13 +34,13 @@ public class ParticipantCreatePage {
     @FindBy(how = How.XPATH, using="//input[@type='text' and @name='dateofbirth']")
     WebElement dateOfBirthSelectionField;
 
-    @FindBy(how = How.XPATH, using="//span[@class='select2-selection select2-selection--single']")
+    @FindBy(how = How.XPATH, using="//span[@class='select2-selection select2-selection--single' and @aria-labelledby='select2-gender-container']")
     WebElement genderSelectionField;
 
     @FindBy(how = How.XPATH, using="//input[@type='text' and @name='native_city']")
     WebElement nativeCityField;
 
-    @FindBy(how = How.XPATH, using="//span[@class='select2-selection select2-selection--single']")
+    @FindBy(how = How.XPATH, using="//span[@class='select2-selection select2-selection--single' and @aria-labelledby='select2-mother_tongue-container']")
     WebElement motherTongueField;
 
     @FindBy(how = How.XPATH, using="//span[@id='recaptcha-anchor' and @role='checkbox']")
@@ -83,8 +78,9 @@ public class ParticipantCreatePage {
 
     public void selectDiseases(List<String> diseaseNames)
     {
-        for(String diseaseName : diseaseNames) {
-            driver.findElement(By.xpath("//li[@class='select2-results__option' and text()='Hypertension']")).click();
+        for(String diseaseName : diseaseNames)
+        {
+           driver.findElement(By.xpath("//li[@class='select2-results__option' and text()='"+diseaseName+"']")).click();
         }
     }
 
@@ -108,10 +104,6 @@ public class ParticipantCreatePage {
         emailField.sendKeys(emailID);
     }
 
-    public void setDateOfBirthSelectionField()
-    {
-    }
-
     public void setGenderSelectionField(String gender)
     {
         genderSelectionField.click();
@@ -121,6 +113,7 @@ public class ParticipantCreatePage {
     public void setNativeCityField(String nativeCity)
     {
         nativeCityField.sendKeys(nativeCity);
+        driver.findElements(By.xpath("//ul[@class='typeahead dropdown-menu']/li/a")).get(0).click();
     }
 
     public void setMotherTongueField(String language)
@@ -137,6 +130,15 @@ public class ParticipantCreatePage {
     public void submitForm()
     {
         submitButton.click();
+    }
+
+    public void dateSelect(String year, String month, String day){
+        dateOfBirthSelectionField.click();
+        driver.findElement(By.xpath("//span[@class='year' and text()='" + year +"']")).click();
+
+        driver.findElement(By.xpath("//span[@class='month' and text()='" + month +"']")).click();
+
+        driver.findElement(By.xpath("//td[@class='day' and text()='" + day +"']")).click();
     }
 
 

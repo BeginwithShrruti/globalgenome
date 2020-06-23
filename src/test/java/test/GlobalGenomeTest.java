@@ -1,47 +1,78 @@
 package test;
 
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.ParticipantCreatePage;
-import utils.Wait;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GlobalGenomeTest extends TestBase{
 
-    @Test
-    public void callHomepage() throws InterruptedException
+    ParticipantCreatePage participantCreatePage ;
+    @BeforeTest
+    public void callParticipantPage()
     {
-        ParticipantCreatePage participantCreatePage = PageFactory.initElements(driver, ParticipantCreatePage.class);
-     //   Wait.untilPageLoadComplete(driver, 20L);
-        Thread.sleep(5000);
-        participantCreatePage.homePage();
+      participantCreatePage = PageFactory.initElements(driver, ParticipantCreatePage.class);
+    }
 
-        // participant's firstname
+    @Test
+    public void formInputTest() throws InterruptedException
+    {
+
         participantCreatePage.setFirstNameField("Shruti");
 
-
-        // participant's lastname
         participantCreatePage.setLastNameField("Dixit");
 
-        // participant's mobile number
-        participantCreatePage.setMobileField("");
+        participantCreatePage.setMobileField("9654900585");
 
-        // participant's Email
-        participantCreatePage.setEmailField();
+        participantCreatePage.setEmailField("lang4shruti@gmail.com");
 
-        // participant's DOB
-        participantCreatePage.setDateOfBirthSelectionField();
+        participantCreatePage.dateSelect("2000", "Jan", "5");
 
-        // participant's gender
-        participantCreatePage.setGenderSelectionField();
+        participantCreatePage.setGenderSelectionField("Female");
 
-        // participant's native city
-        participantCreatePage.setNativeCityField();
+        participantCreatePage.setNativeCityField("Kanpur");
 
-        // participant's mother tongue
-        participantCreatePage.setMotherTongueField();
+        participantCreatePage.setMotherTongueField("Hindi");
 
-        // participant's select diseases
-        participantCreatePage.selectDiseases();
+        List<String> diseaseList = new ArrayList<>();
+        diseaseList.add("Hypertension");
+        diseaseList.add("Diabetes mellitus");
+        diseaseList.add("Tuberculosis");
+        diseaseList.add("Hypothyroidism");
+        participantCreatePage.selectDiseases(diseaseList);
+
+        participantCreatePage.setCaptchaCheckbox();
+
     }
+
+    @Test
+    public void verifyErrorMessageTest()
+    {
+        participantCreatePage.submitForm();
+        Assert.assertEquals("Please enter your First Name", participantCreatePage.getFirstNameErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter your Last Name or Family Name", participantCreatePage.getLastNameErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter your Mobile Number", participantCreatePage.getMobileErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter a valid Email Address", participantCreatePage.getEmailErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter your Date of Birth", participantCreatePage.getDobErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please select your Gender", participantCreatePage.getGenderErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter your Native City", participantCreatePage.getNativeCityErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter your Mother Tongue", participantCreatePage.getMotherTongueErrorFieldVisible().getText());
+
+        Assert.assertEquals("Please enter at least any one option for Disease, or, if you’ve never had any health issues, choose ‘I am healthy’.",
+                participantCreatePage.getDiseaseErrorFieldVisible().getText());
+
+    }
+
 
 }
