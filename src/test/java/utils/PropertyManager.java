@@ -10,13 +10,12 @@ public class PropertyManager {
     private static final Object lock = new Object();
     private static String propertyFilePath = "src/test/resources/configuration.properties";
     private static String driverLocation;
-    private static String flipkartUsername;
-    private static String flipkartPassword;
     private static String screenshotLocation;
-    private static String productDetailDataLocation;
+    private static String dataInputFileLocation;
 
     //Create a Singleton instance. We need only one instance of Property Manager.
-    public static PropertyManager getInstance () {
+    public static PropertyManager getInstance ()
+    {
         if (instance == null) {
             synchronized (lock) {
                 instance = new PropertyManager();
@@ -42,30 +41,20 @@ public class PropertyManager {
 
         //Get properties from configuration.properties
         driverLocation = prop.getProperty("webdriver.chrome.driver");
-        flipkartUsername = prop.getProperty("flipkart.login.username");
-        flipkartPassword = prop.getProperty("flipkart.login.password");
         screenshotLocation = prop.getProperty("screenshot.file.location");
-        productDetailDataLocation = prop.getProperty("test.data.productdetail.location");
+        dataInputFileLocation = prop.getProperty("data.file.location");
     }
 
 
     public String getDriverLocation() {
         return driverLocation;
     }
-
-    public  String getFlipkartUsername() {
-        return flipkartUsername;
-    }
-
-    public  String getFlipkartPassword() {
-        return flipkartPassword;
-    }
-
     public  String getScreenshotLocation() {
         return screenshotLocation;
     }
-
-    public String getProductDetailDataLocation() {
-        return productDetailDataLocation;
+    public static String getDataInputFileLocation()
+    {
+        return dataInputFileLocation;
     }
+
 }
